@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>苹果香蕉价格计算</title>
+    <style>
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            margin: 0;
+            padding: 20px;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            padding: 40px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            max-width: 600px;
+            width: 100%;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+        }
+
+        .problem {
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #667eea;
+        }
+
+        .equation {
+            font-size: 1.5em;
+            text-align: center;
+            margin: 15px 0;
+            color: #333;
+        }
+
+        .apple {
+            color: #e74c3c;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .banana {
+            color: #f39c12;
+            font-weight: bold;
+            font-size: 1.2em;
+        }
+
+        .fruit-icon {
+            font-size: 1.5em;
+            margin: 0 5px;
+        }
+
+        .apple-icon {
+            color: #e74c3c;
+        }
+
+        .banana-icon {
+            color: #f39c12;
+        }
+
+        .solution {
+            background: #e8f5e8;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #27ae60;
+        }
+
+        .step {
+            margin: 15px 0;
+            padding: 15px;
+            background: white;
+            border-radius: 10px;
+            border: 1px solid #ddd;
+        }
+
+        .answer {
+            background: #fff3cd;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #ffc107;
+            text-align: center;
+        }
+
+        .price {
+            font-size: 1.8em;
+            font-weight: bold;
+            color: #e74c3c;
+            margin: 10px 0;
+        }
+
+        .math {
+            font-family: 'Times New Roman', serif;
+            font-style: italic;
+        }
+
+        .highlight {
+            background: #ffeb3b;
+            padding: 2px 5px;
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🍎🍌 苹果香蕉价格计算 🍌🍎</h1>
+
+        <div class="problem">
+            <h2>题目：</h2>
+            <div class="equation">
+                <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">10元</span>
+            </div>
+            <div class="equation">
+                <span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">6元</span>
+            </div>
+            <p style="text-align: center; font-size: 1.2em; margin-top: 20px;">
+                求：<span class="apple-icon fruit-icon">🍎</span>和<span class="banana-icon fruit-icon">🍌</span>的价格
+            </p>
+        </div>
+
+        <div class="solution">
+            <h2>🤔 我们来想想：</h2>
+
+            <div class="step">
+                <h3>第一步：观察两个算式</h3>
+                <div class="equation">
+                    <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">10元</span>
+                </div>
+                <div class="equation">
+                    <span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">6元</span>
+                </div>
+                <p>💡 发现：第一个算式比第二个算式多了一个 <span class="apple-icon fruit-icon">🍎</span></p>
+            </div>
+
+            <div class="step">
+                <h3>第二步：找出一个苹果的价格</h3>
+                <p>第一个算式：<span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 10元</p>
+                <p>第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 6元</p>
+                <p>所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = 10元 - 6元 = <span class="highlight">4元</span></p>
+            </div>
+
+            <div class="step">
+                <h3>第三步：找出一个香蕉的价格</h3>
+                <p>我们知道：<span class="apple-icon fruit-icon">🍎</span> = 4元</p>
+                <p>从第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 6元</p>
+                <p>所以：<span class="banana-icon fruit-icon">🍌</span> = 6元 - 4元 = <span class="highlight">2元</span></p>
+            </div>
+
+            <div class="step">
+                <h3>第四步：检查答案对不对</h3>
+                <p>检查第一个算式：<span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 4元 + 4元 + 2元 = 10元 ✓</p>
+                <p>检查第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 4元 + 2元 = 6元 ✓</p>
+            </div>
+        </div>
+
+        <div class="answer">
+            <h2>🎯 答案：</h2>
+            <div class="price">
+                <span class="apple-icon fruit-icon">🍎</span> = <span class="highlight">4元</span>
+            </div>
+            <div class="price">
+                <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">2元</span>
+            </div>
+        </div>
+
+        <div style="text-align: center; margin-top: 30px; color: #666;">
+            <p>🎉 太棒了！我们成功解决了这个问题！</p>
+            <p>💡 记住：先找出多出来的东西，再算出其他的</p>
+            <p style="margin-top: 20px; font-size: 1.1em;">
+                <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span>
+                <span style="margin: 0 10px;">+</span>
+                <span class="banana-icon fruit-icon">🍌</span><span class="banana-icon fruit-icon">🍌</span>
+                <span style="margin: 0 10px;">=</span>
+                <span style="color: #e74c3c; font-weight: bold;">20元</span>
+            </p>
+            <p style="font-size: 0.9em; color: #888;">（4个苹果 + 2个香蕉 = 4+4+4+4 + 2+2 = 16 + 4 = 20元）</p>
+        </div>
+    </div>
+</body>
+</html>
