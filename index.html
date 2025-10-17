@@ -299,14 +299,22 @@
                 return;
             }
 
-            if (appleDiff === 0) {
-                showError('苹果个数相同，无法用这种方法求解！');
+            let applePrice, bananaPrice;
+
+            // 如果苹果个数不同，用苹果来计算
+            if (appleDiff !== 0) {
+                applePrice = totalDiff / appleDiff;
+                bananaPrice = (total2 - apple2 * applePrice) / banana2;
+            }
+            // 如果苹果个数相同但香蕉个数不同，用香蕉来计算
+            else if (bananaDiff !== 0) {
+                bananaPrice = totalDiff / bananaDiff;
+                applePrice = (total2 - banana2 * bananaPrice) / apple2;
+            }
+            else {
+                showError('无法求解：两个算式的苹果和香蕉个数都相同！');
                 return;
             }
-
-            // 计算价格
-            const applePrice = totalDiff / appleDiff;
-            const bananaPrice = (total2 - apple2 * applePrice) / banana2;
 
             // 检查结果是否合理
             if (applePrice <= 0 || bananaPrice <= 0) {
@@ -328,7 +336,7 @@
 
             // 更新页面内容
             updateProblem(apple1, banana1, total1, apple2, banana2, total2);
-            updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice);
+            updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice, appleDiff, bananaDiff);
             updateAnswer(applePrice, bananaPrice);
             updateSummary(applePrice, bananaPrice);
 
@@ -364,9 +372,8 @@
             document.getElementById('equation2').innerHTML = equation2;
         }
 
-        function updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice) {
+        function updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice, appleDiff, bananaDiff) {
             // 更新解题过程
-            const appleDiff = apple1 - apple2;
             const totalDiff = total1 - total2;
 
             // 第一步
@@ -392,29 +399,57 @@
             step1Eq2 += ' = <span class="highlight">' + total2 + '元</span>';
             document.getElementById('step1-equation2').innerHTML = step1Eq2;
 
-            if (appleDiff > 0) {
-                document.getElementById('step1-discovery').innerHTML = 
-                    '💡 发现：第一个算式比第二个算式多了' + appleDiff + '个 <span class="apple-icon fruit-icon">🍎</span>';
-            } else {
-                document.getElementById('step1-discovery').innerHTML = 
-                    '💡 发现：第二个算式比第一个算式多了' + (-appleDiff) + '个 <span class="apple-icon fruit-icon">🍎</span>';
+            // 根据不同的情况显示发现
+            if (appleDiff !== 0) {
+                if (appleDiff > 0) {
+                    document.getElementById('step1-discovery').innerHTML = 
+                        '💡 发现：第一个算式比第二个算式多了' + appleDiff + '个 <span class="apple-icon fruit-icon">🍎</span>';
+                } else {
+                    document.getElementById('step1-discovery').innerHTML = 
+                        '💡 发现：第二个算式比第一个算式多了' + (-appleDiff) + '个 <span class="apple-icon fruit-icon">🍎</span>';
+                }
+            } else if (bananaDiff !== 0) {
+                if (bananaDiff > 0) {
+                    document.getElementById('step1-discovery').innerHTML = 
+                        '💡 发现：第一个算式比第二个算式多了' + bananaDiff + '个 <span class="banana-icon fruit-icon">🍌</span>';
+                } else {
+                    document.getElementById('step1-discovery').innerHTML = 
+                        '💡 发现：第二个算式比第一个算式多了' + (-bananaDiff) + '个 <span class="banana-icon fruit-icon">🍌</span>';
+                }
             }
 
-            // 第二步
-            document.getElementById('step2-first').innerHTML = 
-                '第一个算式：' + step1Eq1;
-            document.getElementById('step2-second').innerHTML = 
-                '第二个算式：' + step1Eq2;
-            document.getElementById('step2-result').innerHTML = 
-                '所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = ' + totalDiff + '元 ÷ ' + Math.abs(appleDiff) + ' = <span class="highlight">' + applePrice + '元</span>';
+            // 第二步和第三步根据计算方式调整
+            if (appleDiff !== 0) {
+                // 用苹果计算
+                document.getElementById('step2-first').innerHTML = 
+                    '第一个算式：' + step1Eq1;
+                document.getElementById('step2-second').innerHTML = 
+                    '第二个算式：' + step1Eq2;
+                document.getElementById('step2-result').innerHTML = 
+                    '所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = ' + totalDiff + '元 ÷ ' + Math.abs(appleDiff) + ' = <span class="highlight">' + applePrice + '元</span>';
 
-            // 第三步
-            document.getElementById('step3-known').innerHTML = 
-                '我们知道：<span class="apple-icon fruit-icon">🍎</span> = ' + applePrice + '元';
-            document.getElementById('step3-from').innerHTML = 
-                '从第二个算式：' + step1Eq2;
-            document.getElementById('step3-result').innerHTML = 
-                '所以：<span class="banana-icon fruit-icon">🍌</span> = ' + total2 + '元 - ' + (apple2 * applePrice) + '元 = <span class="highlight">' + bananaPrice + '元</span>';
+                document.getElementById('step3-known').innerHTML = 
+                    '我们知道：<span class="apple-icon fruit-icon">🍎</span> = ' + applePrice + '元';
+                document.getElementById('step3-from').innerHTML = 
+                    '从第二个算式：' + step1Eq2;
+                document.getElementById('step3-result').innerHTML = 
+                    '所以：<span class="banana-icon fruit-icon">🍌</span> = ' + total2 + '元 - ' + (apple2 * applePrice) + '元 = <span class="highlight">' + bananaPrice + '元</span>';
+            } else {
+                // 用香蕉计算
+                document.getElementById('step2-first').innerHTML = 
+                    '第一个算式：' + step1Eq1;
+                document.getElementById('step2-second').innerHTML = 
+                    '第二个算式：' + step1Eq2;
+                document.getElementById('step2-result').innerHTML = 
+                    '所以：多出来的 <span class="banana-icon fruit-icon">🍌</span> = ' + totalDiff + '元 ÷ ' + Math.abs(bananaDiff) + ' = <span class="highlight">' + bananaPrice + '元</span>';
+
+                document.getElementById('step3-known').innerHTML = 
+                    '我们知道：<span class="banana-icon fruit-icon">🍌</span> = ' + bananaPrice + '元';
+                document.getElementById('step3-from').innerHTML = 
+                    '从第二个算式：' + step1Eq2;
+                document.getElementById('step3-result').innerHTML = 
+                    '所以：<span class="apple-icon fruit-icon">🍎</span> = ' + total2 + '元 - ' + (banana2 * bananaPrice) + '元 = <span class="highlight">' + applePrice + '元</span>';
+            }
 
             // 第四步
             document.getElementById('check1').innerHTML = 
