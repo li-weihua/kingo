@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>苹果香蕉价格计算</title>
+    <title>苹果香蕉价格计算器</title>
     <style>
         body {
             font-family: 'Microsoft YaHei', Arial, sans-serif;
@@ -21,7 +21,7 @@
             border-radius: 20px;
             padding: 40px;
             box-shadow: 0 20px 40px rgba(0,0,0,0.1);
-            max-width: 600px;
+            max-width: 700px;
             width: 100%;
         }
 
@@ -30,6 +30,59 @@
             color: #333;
             margin-bottom: 30px;
             font-size: 2.5em;
+        }
+
+        .input-section {
+            background: #f0f8ff;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 20px 0;
+            border-left: 5px solid #4a90e2;
+        }
+
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin: 15px 0;
+            gap: 15px;
+        }
+
+        .input-group label {
+            font-weight: bold;
+            color: #333;
+            min-width: 120px;
+        }
+
+        .input-group input {
+            padding: 8px 12px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            font-size: 16px;
+            width: 80px;
+            text-align: center;
+        }
+
+        .input-group input:focus {
+            border-color: #4a90e2;
+            outline: none;
+        }
+
+        .calculate-btn {
+            background: linear-gradient(45deg, #4a90e2, #357abd);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            transition: transform 0.2s;
+        }
+
+        .calculate-btn:hover {
+            transform: translateY(-2px);
         }
 
         .problem {
@@ -45,18 +98,6 @@
             text-align: center;
             margin: 15px 0;
             color: #333;
-        }
-
-        .apple {
-            color: #e74c3c;
-            font-weight: bold;
-            font-size: 1.2em;
-        }
-
-        .banana {
-            color: #f39c12;
-            font-weight: bold;
-            font-size: 1.2em;
         }
 
         .fruit-icon {
@@ -104,92 +145,324 @@
             margin: 10px 0;
         }
 
-        .math {
-            font-family: 'Times New Roman', serif;
-            font-style: italic;
-        }
-
         .highlight {
             background: #ffeb3b;
             padding: 2px 5px;
             border-radius: 3px;
         }
+
+        .error {
+            background: #ffebee;
+            color: #c62828;
+            padding: 15px;
+            border-radius: 10px;
+            margin: 15px 0;
+            border-left: 5px solid #c62828;
+        }
+
+        .hidden {
+            display: none;
+        }
+
+        .reset-btn {
+            background: #ff6b6b;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 20px;
+            font-size: 14px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+
+        .reset-btn:hover {
+            background: #ff5252;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>🍎🍌 苹果香蕉价格计算 🍌🍎</h1>
+        <h1>🍎🍌 苹果香蕉价格计算器 🍌🍎</h1>
 
-        <div class="problem">
+        <div class="input-section">
+            <h2>📝 设置题目参数：</h2>
+            
+            <div class="input-group">
+                <label>第一个算式：</label>
+                <span class="apple-icon fruit-icon">🍎</span>
+                <input type="number" id="apple1" value="2" min="1" max="10">
+                <span>+</span>
+                <span class="banana-icon fruit-icon">🍌</span>
+                <input type="number" id="banana1" value="1" min="1" max="10">
+                <span>=</span>
+                <input type="number" id="total1" value="10" min="1" max="100">
+                <span>元</span>
+            </div>
+
+            <div class="input-group">
+                <label>第二个算式：</label>
+                <span class="apple-icon fruit-icon">🍎</span>
+                <input type="number" id="apple2" value="1" min="1" max="10">
+                <span>+</span>
+                <span class="banana-icon fruit-icon">🍌</span>
+                <input type="number" id="banana2" value="1" min="1" max="10">
+                <span>=</span>
+                <input type="number" id="total2" value="6" min="1" max="100">
+                <span>元</span>
+            </div>
+
+            <button class="calculate-btn" onclick="calculatePrices()">🧮 开始计算</button>
+            <button class="reset-btn" onclick="resetToDefault()">🔄 重置</button>
+        </div>
+
+        <div id="error-message" class="error hidden"></div>
+
+        <div id="problem-section" class="problem hidden">
             <h2>题目：</h2>
-            <div class="equation">
-                <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">10元</span>
-            </div>
-            <div class="equation">
-                <span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">6元</span>
-            </div>
+            <div class="equation" id="equation1"></div>
+            <div class="equation" id="equation2"></div>
             <p style="text-align: center; font-size: 1.2em; margin-top: 20px;">
                 求：<span class="apple-icon fruit-icon">🍎</span>和<span class="banana-icon fruit-icon">🍌</span>的价格
             </p>
         </div>
 
-        <div class="solution">
+        <div id="solution-section" class="solution hidden">
             <h2>🤔 我们来想想：</h2>
-
+            
             <div class="step">
                 <h3>第一步：观察两个算式</h3>
-                <div class="equation">
-                    <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">10元</span>
-                </div>
-                <div class="equation">
-                    <span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">6元</span>
-                </div>
-                <p>💡 发现：第一个算式比第二个算式多了一个 <span class="apple-icon fruit-icon">🍎</span></p>
+                <div class="equation" id="step1-equation1"></div>
+                <div class="equation" id="step1-equation2"></div>
+                <p id="step1-discovery">💡 发现：第一个算式比第二个算式多了一个 <span class="apple-icon fruit-icon">🍎</span></p>
             </div>
 
             <div class="step">
                 <h3>第二步：找出一个苹果的价格</h3>
-                <p>第一个算式：<span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 10元</p>
-                <p>第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 6元</p>
-                <p>所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = 10元 - 6元 = <span class="highlight">4元</span></p>
+                <p id="step2-first"></p>
+                <p id="step2-second"></p>
+                <p id="step2-result">所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = <span class="highlight" id="apple-price"></span></p>
             </div>
 
             <div class="step">
                 <h3>第三步：找出一个香蕉的价格</h3>
-                <p>我们知道：<span class="apple-icon fruit-icon">🍎</span> = 4元</p>
-                <p>从第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 6元</p>
-                <p>所以：<span class="banana-icon fruit-icon">🍌</span> = 6元 - 4元 = <span class="highlight">2元</span></p>
+                <p id="step3-known"></p>
+                <p id="step3-from"></p>
+                <p id="step3-result">所以：<span class="banana-icon fruit-icon">🍌</span> = <span class="highlight" id="banana-price"></span></p>
             </div>
 
             <div class="step">
                 <h3>第四步：检查答案对不对</h3>
-                <p>检查第一个算式：<span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 4元 + 4元 + 2元 = 10元 ✓</p>
-                <p>检查第二个算式：<span class="apple-icon fruit-icon">🍎</span> + <span class="banana-icon fruit-icon">🍌</span> = 4元 + 2元 = 6元 ✓</p>
+                <p id="check1"></p>
+                <p id="check2"></p>
             </div>
         </div>
 
-        <div class="answer">
+        <div id="answer-section" class="answer hidden">
             <h2>🎯 答案：</h2>
             <div class="price">
-                <span class="apple-icon fruit-icon">🍎</span> = <span class="highlight">4元</span>
+                <span class="apple-icon fruit-icon">🍎</span> = <span class="highlight" id="final-apple-price"></span>
             </div>
             <div class="price">
-                <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight">2元</span>
+                <span class="banana-icon fruit-icon">🍌</span> = <span class="highlight" id="final-banana-price"></span>
             </div>
         </div>
 
-        <div style="text-align: center; margin-top: 30px; color: #666;">
+        <div id="summary-section" class="hidden" style="text-align: center; margin-top: 30px; color: #666;">
             <p>🎉 太棒了！我们成功解决了这个问题！</p>
             <p>💡 记住：先找出多出来的东西，再算出其他的</p>
-            <p style="margin-top: 20px; font-size: 1.1em;">
-                <span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span><span class="apple-icon fruit-icon">🍎</span>
-                <span style="margin: 0 10px;">+</span>
-                <span class="banana-icon fruit-icon">🍌</span><span class="banana-icon fruit-icon">🍌</span>
-                <span style="margin: 0 10px;">=</span>
-                <span style="color: #e74c3c; font-weight: bold;">20元</span>
-            </p>
-            <p style="font-size: 0.9em; color: #888;">（4个苹果 + 2个香蕉 = 4+4+4+4 + 2+2 = 16 + 4 = 20元）</p>
         </div>
     </div>
+
+    <script>
+        function calculatePrices() {
+            // 获取输入值
+            const apple1 = parseInt(document.getElementById('apple1').value);
+            const banana1 = parseInt(document.getElementById('banana1').value);
+            const total1 = parseInt(document.getElementById('total1').value);
+            const apple2 = parseInt(document.getElementById('apple2').value);
+            const banana2 = parseInt(document.getElementById('banana2').value);
+            const total2 = parseInt(document.getElementById('total2').value);
+
+            // 验证输入
+            if (apple1 <= 0 || banana1 <= 0 || total1 <= 0 || apple2 <= 0 || banana2 <= 0 || total2 <= 0) {
+                showError('请输入大于0的数字！');
+                return;
+            }
+
+            // 检查是否有解
+            const appleDiff = apple1 - apple2;
+            const bananaDiff = banana1 - banana2;
+            const totalDiff = total1 - total2;
+
+            if (appleDiff === 0 && bananaDiff === 0) {
+                showError('两个算式完全相同，无法求解！');
+                return;
+            }
+
+            if (appleDiff === 0) {
+                showError('苹果个数相同，无法用这种方法求解！');
+                return;
+            }
+
+            // 计算价格
+            const applePrice = totalDiff / appleDiff;
+            const bananaPrice = (total2 - apple2 * applePrice) / banana2;
+
+            // 检查结果是否合理
+            if (applePrice <= 0 || bananaPrice <= 0) {
+                showError('计算结果不合理，请检查输入的数字！');
+                return;
+            }
+
+            // 验证答案
+            const check1 = apple1 * applePrice + banana1 * bananaPrice;
+            const check2 = apple2 * applePrice + banana2 * bananaPrice;
+
+            if (Math.abs(check1 - total1) > 0.01 || Math.abs(check2 - total2) > 0.01) {
+                showError('计算结果验证失败，请检查输入！');
+                return;
+            }
+
+            // 隐藏错误信息
+            document.getElementById('error-message').classList.add('hidden');
+
+            // 更新页面内容
+            updateProblem(apple1, banana1, total1, apple2, banana2, total2);
+            updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice);
+            updateAnswer(applePrice, bananaPrice);
+            updateSummary(applePrice, bananaPrice);
+
+            // 显示结果
+            document.getElementById('problem-section').classList.remove('hidden');
+            document.getElementById('solution-section').classList.remove('hidden');
+            document.getElementById('answer-section').classList.remove('hidden');
+            document.getElementById('summary-section').classList.remove('hidden');
+        }
+
+        function updateProblem(apple1, banana1, total1, apple2, banana2, total2) {
+            // 更新题目显示
+            let equation1 = '';
+            for (let i = 0; i < apple1; i++) {
+                equation1 += '<span class="apple-icon fruit-icon">🍎</span>';
+            }
+            equation1 += ' + ';
+            for (let i = 0; i < banana1; i++) {
+                equation1 += '<span class="banana-icon fruit-icon">🍌</span>';
+            }
+            equation1 += ' = <span class="highlight">' + total1 + '元</span>';
+            document.getElementById('equation1').innerHTML = equation1;
+
+            let equation2 = '';
+            for (let i = 0; i < apple2; i++) {
+                equation2 += '<span class="apple-icon fruit-icon">🍎</span>';
+            }
+            equation2 += ' + ';
+            for (let i = 0; i < banana2; i++) {
+                equation2 += '<span class="banana-icon fruit-icon">🍌</span>';
+            }
+            equation2 += ' = <span class="highlight">' + total2 + '元</span>';
+            document.getElementById('equation2').innerHTML = equation2;
+        }
+
+        function updateSolution(apple1, banana1, total1, apple2, banana2, total2, applePrice, bananaPrice) {
+            // 更新解题过程
+            const appleDiff = apple1 - apple2;
+            const totalDiff = total1 - total2;
+
+            // 第一步
+            let step1Eq1 = '';
+            for (let i = 0; i < apple1; i++) {
+                step1Eq1 += '<span class="apple-icon fruit-icon">🍎</span>';
+            }
+            step1Eq1 += ' + ';
+            for (let i = 0; i < banana1; i++) {
+                step1Eq1 += '<span class="banana-icon fruit-icon">🍌</span>';
+            }
+            step1Eq1 += ' = <span class="highlight">' + total1 + '元</span>';
+            document.getElementById('step1-equation1').innerHTML = step1Eq1;
+
+            let step1Eq2 = '';
+            for (let i = 0; i < apple2; i++) {
+                step1Eq2 += '<span class="apple-icon fruit-icon">🍎</span>';
+            }
+            step1Eq2 += ' + ';
+            for (let i = 0; i < banana2; i++) {
+                step1Eq2 += '<span class="banana-icon fruit-icon">🍌</span>';
+            }
+            step1Eq2 += ' = <span class="highlight">' + total2 + '元</span>';
+            document.getElementById('step1-equation2').innerHTML = step1Eq2;
+
+            if (appleDiff > 0) {
+                document.getElementById('step1-discovery').innerHTML = 
+                    '💡 发现：第一个算式比第二个算式多了' + appleDiff + '个 <span class="apple-icon fruit-icon">🍎</span>';
+            } else {
+                document.getElementById('step1-discovery').innerHTML = 
+                    '💡 发现：第二个算式比第一个算式多了' + (-appleDiff) + '个 <span class="apple-icon fruit-icon">🍎</span>';
+            }
+
+            // 第二步
+            document.getElementById('step2-first').innerHTML = 
+                '第一个算式：' + step1Eq1;
+            document.getElementById('step2-second').innerHTML = 
+                '第二个算式：' + step1Eq2;
+            document.getElementById('step2-result').innerHTML = 
+                '所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = ' + totalDiff + '元 ÷ ' + Math.abs(appleDiff) + ' = <span class="highlight">' + applePrice + '元</span>';
+
+            // 第三步
+            document.getElementById('step3-known').innerHTML = 
+                '我们知道：<span class="apple-icon fruit-icon">🍎</span> = ' + applePrice + '元';
+            document.getElementById('step3-from').innerHTML = 
+                '从第二个算式：' + step1Eq2;
+            document.getElementById('step3-result').innerHTML = 
+                '所以：<span class="banana-icon fruit-icon">🍌</span> = ' + total2 + '元 - ' + (apple2 * applePrice) + '元 = <span class="highlight">' + bananaPrice + '元</span>';
+
+            // 第四步
+            document.getElementById('check1').innerHTML = 
+                '检查第一个算式：' + step1Eq1 + ' = ' + (apple1 * applePrice) + '元 + ' + (banana1 * bananaPrice) + '元 = ' + (apple1 * applePrice + banana1 * bananaPrice) + '元 ✓';
+            document.getElementById('check2').innerHTML = 
+                '检查第二个算式：' + step1Eq2 + ' = ' + (apple2 * applePrice) + '元 + ' + (banana2 * bananaPrice) + '元 = ' + (apple2 * applePrice + banana2 * bananaPrice) + '元 ✓';
+        }
+
+        function updateAnswer(applePrice, bananaPrice) {
+            document.getElementById('final-apple-price').textContent = applePrice + '元';
+            document.getElementById('final-banana-price').textContent = bananaPrice + '元';
+        }
+
+        function updateSummary(applePrice, bananaPrice) {
+            // 可以添加更多总结内容
+        }
+
+        function showError(message) {
+            document.getElementById('error-message').textContent = message;
+            document.getElementById('error-message').classList.remove('hidden');
+            
+            // 隐藏其他部分
+            document.getElementById('problem-section').classList.add('hidden');
+            document.getElementById('solution-section').classList.add('hidden');
+            document.getElementById('answer-section').classList.add('hidden');
+            document.getElementById('summary-section').classList.add('hidden');
+        }
+
+        function resetToDefault() {
+            document.getElementById('apple1').value = 2;
+            document.getElementById('banana1').value = 1;
+            document.getElementById('total1').value = 10;
+            document.getElementById('apple2').value = 1;
+            document.getElementById('banana2').value = 1;
+            document.getElementById('total2').value = 6;
+            
+            // 隐藏所有结果
+            document.getElementById('error-message').classList.add('hidden');
+            document.getElementById('problem-section').classList.add('hidden');
+            document.getElementById('solution-section').classList.add('hidden');
+            document.getElementById('answer-section').classList.add('hidden');
+            document.getElementById('summary-section').classList.add('hidden');
+        }
+
+        // 页面加载时自动计算一次
+        window.onload = function() {
+            calculatePrices();
+        };
+    </script>
 </body>
 </html>
