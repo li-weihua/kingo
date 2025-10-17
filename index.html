@@ -237,14 +237,14 @@
             </div>
 
             <div class="step">
-                <h3>第二步：找出一个苹果的价格</h3>
+                <h3 id="step2-title">第二步：找出一个苹果的价格</h3>
                 <p id="step2-first"></p>
                 <p id="step2-second"></p>
                 <p id="step2-result">所以：多出来的 <span class="apple-icon fruit-icon">🍎</span> = <span class="highlight" id="apple-price"></span></p>
             </div>
 
             <div class="step">
-                <h3>第三步：找出一个香蕉的价格</h3>
+                <h3 id="step3-title">第三步：找出一个香蕉的价格</h3>
                 <p id="step3-known"></p>
                 <p id="step3-from"></p>
                 <p id="step3-result">所以：<span class="banana-icon fruit-icon">🍌</span> = <span class="highlight" id="banana-price"></span></p>
@@ -421,6 +421,9 @@
             // 第二步和第三步根据计算方式调整
             if (appleDiff !== 0) {
                 // 用苹果计算
+                document.getElementById('step2-title').innerHTML = '第二步：找出一个苹果的价格';
+                document.getElementById('step3-title').innerHTML = '第三步：找出一个香蕉的价格';
+                
                 document.getElementById('step2-first').innerHTML = 
                     '第一个算式：' + step1Eq1;
                 document.getElementById('step2-second').innerHTML = 
@@ -436,6 +439,9 @@
                     '所以：<span class="banana-icon fruit-icon">🍌</span> = ' + total2 + '元 - ' + (apple2 * applePrice) + '元 = <span class="highlight">' + bananaPrice + '元</span>';
             } else {
                 // 用香蕉计算
+                document.getElementById('step2-title').innerHTML = '第二步：找出一个香蕉的价格';
+                document.getElementById('step3-title').innerHTML = '第三步：找出一个苹果的价格';
+                
                 document.getElementById('step2-first').innerHTML = 
                     '第一个算式：' + step1Eq1;
                 document.getElementById('step2-second').innerHTML = 
